@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Change {
+  id           String   @id
+  type         String
+  title        String
+  description  String
+  justification String
+  risk         String
+  impact       String?
+  plannedStart String?
+  plannedEnd   String?
+  actualStart  String?
+  actualEnd    String?
+  rollback     String?
+  service      String?
+  requester    String
+  stage        String   @default("New")
+  outcome      String?
+  reviewNotes  String?
+  attachments  Json     @default("[]")
+  cabVotes     Json     @default("{}")
+  templateId   String?
+  tasks        Task[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Task {
+  id          String   @id
+  title       String
+  description String?
+  assignedTo  String?
+  dueDate     String?
+  priority    String   @default("Medium")
+  status      String   @default("Open")
+  createdBy   String?
+  changeId    String
+  change      Change   @relation(fields: [changeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Template {
+  id            String   @id
+  title         String
+  description   String
+  justification String?
+  risk          String
+  rollback      String?
+  service       String?
+  rationale     String?
+  status        String   @default("Pending CAB Approval")
+  proposedBy    String?
+  proposedAt    String?
+  approvedAt    String?
+  usageCount    Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

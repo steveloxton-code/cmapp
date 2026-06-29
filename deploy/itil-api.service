@@ -1,0 +1,24 @@
+[Unit]
+Description=ITIL Change Management API
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=itil
+Group=itil
+WorkingDirectory=/opt/itil-app/api
+
+# Set your DATABASE_URL here — this file is root-owned and not in the repo
+Environment=PORT=3001
+Environment=DATABASE_URL=postgresql://itil:CHANGE_THIS_PASSWORD@localhost:5432/itil_change_mgmt
+
+ExecStart=/usr/bin/node src/index.js
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=itil-api
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,22 @@
+{
+  "name": "itil-api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}
