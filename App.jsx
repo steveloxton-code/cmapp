@@ -131,7 +131,7 @@ export default function App(){
     setTemplates(p=>p.map(t=>t.id===id?updated:t));
   }
 
-  function navigate(v){ setView(v); setSelected(null); }
+  function navigate(v){ setView(v); setSelected(null); setShowForm(false); setForm(initForm()); }
 
   // ── Derived values ────────────────────────────────────────────────────────────
   const pendingCAB    = changes.filter(c=>c.stage==="Awaiting CAB");

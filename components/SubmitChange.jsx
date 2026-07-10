@@ -34,7 +34,14 @@ export default function SubmitChange({form,setForm,onSubmit,onCancel,templates})
         </div>
         <div>
           <label style={{fontSize:12,color:"var(--color-text-secondary)",display:"block",marginBottom:5,fontWeight:500}}>Change type</label>
-          <select value={form.type} onChange={e=>{set("type",e.target.value);if(e.target.value!=="Standard")set("templateId",null);}} style={{...inp,padding:"8px 10px"}}>
+          <select value={form.type} onChange={e=>{
+            const t=e.target.value;
+            if(t!=="Standard"&&form.templateId){
+              setForm(p=>({...p,type:t,templateId:null,description:"",justification:"",rollback:"",risk:"Low",service:""}));
+            } else {
+              setForm(p=>({...p,type:t,templateId:t==="Standard"?p.templateId:null}));
+            }
+          }} style={{...inp,padding:"8px 10px"}}>
             {CHANGE_TYPES.map(t=><option key={t}>{t}</option>)}
           </select>
         </div>
