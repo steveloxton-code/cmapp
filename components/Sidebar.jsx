@@ -9,10 +9,7 @@ export default function Sidebar({view,role,pendingCABCount,openTaskCount,pending
   return (
     <div style={{width:220,flexShrink:0,background:"#1a1a2e",display:"flex",flexDirection:"column",minHeight:"100vh",position:"sticky",top:0}}>
       <div style={{padding:"20px 20px 16px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-        <svg width="52" height="32" viewBox="0 0 52 32" fill="none">
-          <rect width="52" height="32" rx="7" fill="#E8312A"/>
-          <text x="26" y="23" textAnchor="middle" fontFamily="Arial Black,Arial,sans-serif" fontWeight="900" fontSize="18" fill="white" letterSpacing="-0.5">ogi</text>
-        </svg>
+        <img src="/ogi-logo.svg" alt="Ogi" style={{height:32}}/>
         <div style={{fontSize:11,color:SM,marginTop:8,fontWeight:500,letterSpacing:"0.06em",textTransform:"uppercase"}}>Change Management</div>
       </div>
 
