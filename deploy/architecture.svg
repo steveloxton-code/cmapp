@@ -1,114 +1,603 @@
-<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <title>ITIL Change Management App Architecture</title>
-  <desc>System architecture showing client browsers connecting to an Ubuntu server running Nginx, Node.js API, and PostgreSQL</desc>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 720 480"
+   role="img"
+   font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+   version="1.1"
+   id="svg47"
+   sodipodi:docname="architecture.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview47"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.68125"
+     inkscape:cx="360.1487"
+     inkscape:cy="240"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg47" />
+  <title
+     id="title1">ITIL Change Management App Architecture</title>
+  <desc
+     id="desc1">System architecture showing client browsers connecting to an Ubuntu server running Nginx, Node.js API, and PostgreSQL</desc>
   <!-- Background -->
-  <rect width="720" height="480" fill="#f1f5f9"/>
-
+  <rect
+     width="720"
+     height="480"
+     fill="#f1f5f9"
+     id="rect1" />
   <!-- Labels -->
-  <text x="44" y="28" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="0.08em">CLIENT MACHINES</text>
-  <text x="310" y="28" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="0.08em">UBUNTU SERVER</text>
-
+  <text
+     x="44"
+     y="28"
+     font-size="11"
+     font-weight="600"
+     fill="#94a3b8"
+     letter-spacing="0.08em"
+     id="text1">CLIENT MACHINES</text>
+  <text
+     x="310"
+     y="28"
+     font-size="11"
+     font-weight="600"
+     fill="#94a3b8"
+     letter-spacing="0.08em"
+     id="text2">UBUNTU SERVER</text>
   <!-- Server background panel -->
-  <rect x="290" y="38" width="410" height="418" rx="14" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
-
+  <rect
+     x="290"
+     y="38"
+     width="410"
+     height="418"
+     rx="14"
+     fill="#e2e8f0"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect2" />
   <!-- Browser 1 -->
-  <rect x="20" y="80" width="130" height="76" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="85" y="108" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Browser</text>
-  <text x="85" y="126" font-size="11" fill="#475569" text-anchor="middle">User 1</text>
-  <text x="85" y="143" font-size="10" fill="#94a3b8" text-anchor="middle">https://cmapp</text>
-
+  <rect
+     x="20"
+     y="80"
+     width="130"
+     height="76"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect3" />
+  <text
+     x="85"
+     y="108"
+     font-size="13"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text3">Browser</text>
+  <text
+     x="85"
+     y="126"
+     font-size="11"
+     fill="#475569"
+     text-anchor="middle"
+     id="text4">User 1</text>
+  <text
+     x="85"
+     y="143"
+     font-size="10px"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text5">https://plwmp</text>
   <!-- Browser 2 -->
-  <rect x="20" y="196" width="130" height="76" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="85" y="224" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Browser</text>
-  <text x="85" y="242" font-size="11" fill="#475569" text-anchor="middle">User 2</text>
-  <text x="85" y="259" font-size="10" fill="#94a3b8" text-anchor="middle">https://cmapp</text>
-
+  <rect
+     x="20"
+     y="196"
+     width="130"
+     height="76"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect5" />
+  <text
+     x="85"
+     y="224"
+     font-size="13"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text6">Browser</text>
+  <text
+     x="85"
+     y="242"
+     font-size="11"
+     fill="#475569"
+     text-anchor="middle"
+     id="text7">User 2</text>
+  <text
+     x="85"
+     y="259"
+     font-size="10px"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text8">https://plwmp</text>
   <!-- Browser 3 -->
-  <rect x="20" y="312" width="130" height="76" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <text x="85" y="340" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Browser</text>
-  <text x="85" y="358" font-size="11" fill="#475569" text-anchor="middle">User 3</text>
-  <text x="85" y="375" font-size="10" fill="#94a3b8" text-anchor="middle">https://cmapp</text>
-
+  <rect
+     x="20"
+     y="312"
+     width="130"
+     height="76"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect8" />
+  <text
+     x="85"
+     y="340"
+     font-size="13"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text9">Browser</text>
+  <text
+     x="85"
+     y="358"
+     font-size="11"
+     fill="#475569"
+     text-anchor="middle"
+     id="text10">User 3</text>
+  <text
+     x="85"
+     y="375"
+     font-size="10px"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text11">https://plwmp</text>
   <!-- Nginx box -->
-  <rect x="310" y="58" width="170" height="398" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <rect x="310" y="58" width="170" height="36" rx="10" fill="#002966"/>
-  <rect x="310" y="76" width="170" height="18" fill="#002966"/>
-  <text x="395" y="81" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Nginx :443</text>
-
-  <text x="395" y="122" font-size="11" fill="#475569" text-anchor="middle">TLS termination</text>
-  <text x="395" y="140" font-size="11" fill="#475569" text-anchor="middle">HTTP → HTTPS redirect</text>
-
-  <line x1="326" y1="162" x2="464" y2="162" stroke="#e2e8f0" stroke-width="1"/>
-
-  <text x="395" y="184" font-size="11" font-weight="600" fill="#0f172a" text-anchor="middle">/* → static files</text>
-  <text x="395" y="202" font-size="10" fill="#475569" text-anchor="middle">React app (dist/)</text>
-  <text x="395" y="220" font-size="10" fill="#94a3b8" text-anchor="middle">HTML · CSS · JS</text>
-
-  <line x1="326" y1="238" x2="464" y2="238" stroke="#e2e8f0" stroke-width="1"/>
-
-  <text x="395" y="260" font-size="11" font-weight="600" fill="#0f172a" text-anchor="middle">/api/* → proxy</text>
-  <text x="395" y="278" font-size="10" fill="#475569" text-anchor="middle">forwards to</text>
-  <text x="395" y="296" font-size="10" fill="#94a3b8" text-anchor="middle">localhost:3001</text>
-
-  <rect x="325" y="390" width="140" height="48" rx="8" fill="#f1f5f9"/>
-  <text x="395" y="412" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Managed by</text>
-  <text x="395" y="428" font-size="11" font-weight="700" fill="#002966" text-anchor="middle">systemd</text>
-
+  <rect
+     x="310"
+     y="58"
+     width="170"
+     height="398"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect11" />
+  <rect
+     x="310"
+     y="58"
+     width="170"
+     height="36"
+     rx="10"
+     fill="#002966"
+     id="rect12" />
+  <rect
+     x="310"
+     y="76"
+     width="170"
+     height="18"
+     fill="#002966"
+     id="rect13" />
+  <text
+     x="395"
+     y="81"
+     font-size="12"
+     font-weight="700"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text13">Nginx :443</text>
+  <text
+     x="395"
+     y="122"
+     font-size="11"
+     fill="#475569"
+     text-anchor="middle"
+     id="text14">TLS termination</text>
+  <text
+     x="395"
+     y="140"
+     font-size="11"
+     fill="#475569"
+     text-anchor="middle"
+     id="text15">HTTP → HTTPS redirect</text>
+  <line
+     x1="326"
+     y1="162"
+     x2="464"
+     y2="162"
+     stroke="#e2e8f0"
+     stroke-width="1"
+     id="line15" />
+  <text
+     x="395"
+     y="184"
+     font-size="11"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text16">/* → static files</text>
+  <text
+     x="395"
+     y="202"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text17">React app (dist/)</text>
+  <text
+     x="395"
+     y="220"
+     font-size="10"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text18">HTML · CSS · JS</text>
+  <line
+     x1="326"
+     y1="238"
+     x2="464"
+     y2="238"
+     stroke="#e2e8f0"
+     stroke-width="1"
+     id="line18" />
+  <text
+     x="395"
+     y="260"
+     font-size="11"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text19">/api/* → proxy</text>
+  <text
+     x="395"
+     y="278"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text20">forwards to</text>
+  <text
+     x="395"
+     y="296"
+     font-size="10"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text21">localhost:3001</text>
+  <rect
+     x="325"
+     y="390"
+     width="140"
+     height="48"
+     rx="8"
+     fill="#f1f5f9"
+     id="rect21" />
+  <text
+     x="395"
+     y="412"
+     font-size="10"
+     font-weight="600"
+     fill="#475569"
+     text-anchor="middle"
+     id="text22">Managed by</text>
+  <text
+     x="395"
+     y="428"
+     font-size="11"
+     font-weight="700"
+     fill="#002966"
+     text-anchor="middle"
+     id="text23">systemd</text>
   <!-- Node/Express/Prisma box -->
-  <rect x="500" y="58" width="180" height="216" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <rect x="500" y="58" width="180" height="36" rx="10" fill="#E8312A"/>
-  <rect x="500" y="76" width="180" height="18" fill="#E8312A"/>
-  <text x="590" y="81" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">Node.js :3001</text>
-
-  <text x="590" y="118" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Express</text>
-  <text x="590" y="136" font-size="10" fill="#475569" text-anchor="middle">GET /api/changes</text>
-  <text x="590" y="152" font-size="10" fill="#475569" text-anchor="middle">POST /api/changes</text>
-  <text x="590" y="168" font-size="10" fill="#475569" text-anchor="middle">PATCH /api/changes/:id</text>
-  <text x="590" y="184" font-size="10" fill="#475569" text-anchor="middle">GET /api/templates</text>
-
-  <line x1="516" y1="200" x2="664" y2="200" stroke="#e2e8f0" stroke-width="1"/>
-
-  <text x="590" y="222" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Prisma ORM</text>
-  <text x="590" y="240" font-size="10" fill="#475569" text-anchor="middle">Type-safe DB queries</text>
-  <text x="590" y="256" font-size="10" fill="#475569" text-anchor="middle">Schema migrations</text>
-
+  <rect
+     x="500"
+     y="58"
+     width="180"
+     height="216"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect23" />
+  <rect
+     x="500"
+     y="58"
+     width="180"
+     height="36"
+     rx="10"
+     fill="#E8312A"
+     id="rect24" />
+  <rect
+     x="500"
+     y="76"
+     width="180"
+     height="18"
+     fill="#E8312A"
+     id="rect25" />
+  <text
+     x="590"
+     y="81"
+     font-size="12"
+     font-weight="700"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text25">Node.js :3001</text>
+  <text
+     x="590"
+     y="118"
+     font-size="12"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text26">Express</text>
+  <text
+     x="590"
+     y="136"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text27">GET /api/changes</text>
+  <text
+     x="590"
+     y="152"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text28">POST /api/changes</text>
+  <text
+     x="590"
+     y="168"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text29">PATCH /api/changes/:id</text>
+  <text
+     x="590"
+     y="184"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text30">GET /api/templates</text>
+  <line
+     x1="516"
+     y1="200"
+     x2="664"
+     y2="200"
+     stroke="#e2e8f0"
+     stroke-width="1"
+     id="line30" />
+  <text
+     x="590"
+     y="222"
+     font-size="12"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text31">Prisma ORM</text>
+  <text
+     x="590"
+     y="240"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text32">Type-safe DB queries</text>
+  <text
+     x="590"
+     y="256"
+     font-size="10"
+     fill="#475569"
+     text-anchor="middle"
+     id="text33">Schema migrations</text>
   <!-- PostgreSQL box -->
-  <rect x="500" y="296" width="180" height="160" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
-  <rect x="500" y="296" width="180" height="36" rx="10" fill="#336791"/>
-  <rect x="500" y="314" width="180" height="18" fill="#336791"/>
-  <text x="590" y="319" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">PostgreSQL</text>
-
-  <text x="590" y="354" font-size="11" font-weight="600" fill="#0f172a" text-anchor="middle">Change</text>
-  <text x="590" y="372" font-size="11" font-weight="600" fill="#0f172a" text-anchor="middle">Task</text>
-  <text x="590" y="390" font-size="11" font-weight="600" fill="#0f172a" text-anchor="middle">Template</text>
-  <text x="590" y="416" font-size="10" fill="#94a3b8" text-anchor="middle">itil_change_mgmt db</text>
-  <text x="590" y="434" font-size="10" fill="#94a3b8" text-anchor="middle">port 5432</text>
-
+  <rect
+     x="500"
+     y="296"
+     width="180"
+     height="160"
+     rx="10"
+     fill="#ffffff"
+     stroke="#cbd5e1"
+     stroke-width="1"
+     id="rect33" />
+  <rect
+     x="500"
+     y="296"
+     width="180"
+     height="36"
+     rx="10"
+     fill="#336791"
+     id="rect34" />
+  <rect
+     x="500"
+     y="314"
+     width="180"
+     height="18"
+     fill="#336791"
+     id="rect35" />
+  <text
+     x="590"
+     y="319"
+     font-size="12"
+     font-weight="700"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text35">PostgreSQL</text>
+  <text
+     x="590"
+     y="354"
+     font-size="11"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text36">Change</text>
+  <text
+     x="590"
+     y="372"
+     font-size="11"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text37">Task</text>
+  <text
+     x="590"
+     y="390"
+     font-size="11"
+     font-weight="600"
+     fill="#0f172a"
+     text-anchor="middle"
+     id="text38">Template</text>
+  <text
+     x="590"
+     y="416"
+     font-size="10"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text39">itil_change_mgmt db</text>
+  <text
+     x="590"
+     y="434"
+     font-size="10"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text40">port 5432</text>
   <!-- Arrows -->
-  <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+  <defs
+     id="defs40">
+    <marker
+       id="arr"
+       markerWidth="8"
+       markerHeight="8"
+       refX="6"
+       refY="3"
+       orient="auto">
+      <path
+         d="M0,0 L0,6 L8,3 z"
+         fill="#94a3b8"
+         id="path40" />
     </marker>
   </defs>
-
-  <line x1="152" y1="118" x2="305" y2="118" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
-  <line x1="152" y1="234" x2="305" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
-  <line x1="152" y1="350" x2="305" y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
-  <text x="218" y="108" font-size="9" fill="#94a3b8" text-anchor="middle">HTTPS</text>
-
-  <line x1="482" y1="270" x2="496" y2="200" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="503" y="242" font-size="9" fill="#475569">/api/*</text>
-
-  <line x1="590" y1="274" x2="590" y2="292" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
-
+  <line
+     x1="152"
+     y1="118"
+     x2="305"
+     y2="118"
+     stroke="#94a3b8"
+     stroke-width="1.5"
+     stroke-dasharray="5,3"
+     marker-end="url(#arr)"
+     id="line40" />
+  <line
+     x1="152"
+     y1="234"
+     x2="305"
+     y2="200"
+     stroke="#94a3b8"
+     stroke-width="1.5"
+     stroke-dasharray="5,3"
+     marker-end="url(#arr)"
+     id="line41" />
+  <line
+     x1="152"
+     y1="350"
+     x2="305"
+     y2="280"
+     stroke="#94a3b8"
+     stroke-width="1.5"
+     stroke-dasharray="5,3"
+     marker-end="url(#arr)"
+     id="line42" />
+  <text
+     x="218"
+     y="108"
+     font-size="9"
+     fill="#94a3b8"
+     text-anchor="middle"
+     id="text42">HTTPS</text>
+  <line
+     x1="482"
+     y1="270"
+     x2="496"
+     y2="200"
+     stroke="#475569"
+     stroke-width="1.5"
+     marker-end="url(#arr)"
+     id="line43" />
+  <text
+     x="503"
+     y="242"
+     font-size="9"
+     fill="#475569"
+     id="text43">/api/*</text>
+  <line
+     x1="590"
+     y1="274"
+     x2="590"
+     y2="292"
+     stroke="#475569"
+     stroke-width="1.5"
+     marker-end="url(#arr)"
+     id="line44" />
   <!-- Legend -->
-  <rect x="20" y="416" width="250" height="44" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
-  <rect x="32" y="430" width="10" height="10" rx="2" fill="#002966"/>
-  <text x="48" y="440" font-size="10" fill="#475569">Nginx (reverse proxy + TLS)</text>
-  <rect x="32" y="448" width="10" height="10" rx="2" fill="#E8312A"/>
-  <text x="48" y="458" font-size="10" fill="#475569">Node.js API (Express + Prisma)</text>
-  <rect x="148" y="448" width="10" height="10" rx="2" fill="#336791"/>
-  <text x="164" y="458" font-size="10" fill="#475569">PostgreSQL</text>
-
+  <rect
+     x="20.059805"
+     y="404.7587"
+     width="249.88039"
+     height="55.181507"
+     rx="7.9961724"
+     fill="#ffffff"
+     stroke="#e2e8f0"
+     stroke-width="1.11961"
+     id="rect44" />
+  <rect
+     x="30.81041"
+     y="409.77695"
+     width="10"
+     height="10"
+     rx="2"
+     fill="#002966"
+     id="rect45" />
+  <text
+     x="46.81041"
+     y="419.77695"
+     font-size="10px"
+     fill="#475569"
+     id="text45">Nginx (reverse proxy + TLS)</text>
+  <rect
+     x="30.81041"
+     y="427.77695"
+     width="10"
+     height="10"
+     rx="2"
+     fill="#e8312a"
+     id="rect46" />
+  <text
+     x="46.81041"
+     y="437.77695"
+     font-size="10px"
+     fill="#475569"
+     id="text46">Node.js API (Express + Prisma)</text>
+  <rect
+     x="30.825277"
+     y="444.43121"
+     width="10"
+     height="10"
+     rx="2"
+     fill="#336791"
+     id="rect47" />
+  <text
+     x="46.23048"
+     y="452.64682"
+     font-size="10px"
+     fill="#475569"
+     id="text47">PostgreSQL</text>
 </svg>
