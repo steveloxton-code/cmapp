@@ -36,7 +36,7 @@ export const TMPL_BG  = {"Pending CAB Approval":"#EEEDFE",Approved:"#EAF3DE",Rej
 
 // ── User mapping ──────────────────────────────────────────────────────────────
 export const USER_NAMES  = {"Requester":"Alice Johnson","Change Manager":"Liam Mainwaring","CAB Approver":"Jordan Faith"};
-export const USER_EMAILS = {"Requester":"alice.johnson@ogi.wales","Change Manager":"liam.mainwaring@ogi.wales","CAB Approver":"jordan.faith@ogi.wales"};
+export const USER_EMAILS = {"Requester":"steven.loxton@ogi.wales","Change Manager":"liam.mainwaring@ogi.wales","CAB Approver":"jordan.faith@ogi.wales"};
 
 // ── Utility functions ─────────────────────────────────────────────────────────
 export function daysFromNow(d,h=9,m=0){const dt=new Date();dt.setDate(dt.getDate()+d);dt.setHours(h,m,0,0);return dt.toISOString().slice(0,16);}
