@@ -35,7 +35,7 @@ export const TMPL_C   = {"Pending CAB Approval":"#534AB7",Approved:"#27500A",Rej
 export const TMPL_BG  = {"Pending CAB Approval":"#EEEDFE",Approved:"#EAF3DE",Rejected:"#FCEBEB"};
 
 // ── User mapping ──────────────────────────────────────────────────────────────
-export const USER_NAMES  = {"Requester":"Alice Johnson","Change Manager":"Liam Mainwaring","CAB Approver":"Jordan Faith"};
+export const USER_NAMES  = {"Requester":"Steven Loxton","Change Manager":"Liam Mainwaring","CAB Approver":"Jordan Faith"};
 export const USER_EMAILS = {"Requester":"steven.loxton@ogi.wales","Change Manager":"liam.mainwaring@ogi.wales","CAB Approver":"jordan.faith@ogi.wales"};
 
 // ── Utility functions ─────────────────────────────────────────────────────────
