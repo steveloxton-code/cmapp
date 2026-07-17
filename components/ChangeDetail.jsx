@@ -152,7 +152,9 @@ function ChangeTasksPanel({change,onAddTask,onUpdateTask}){
 
 // ── Change detail ─────────────────────────────────────────────────────────────
 export default function ChangeDetail({change,role,allChanges,templates,onBack,onStageChange,onFieldUpdate,onAddTask,onUpdateTask,isOwner}){
-  const [tab,setTab] = useState("details");
+  const [tab,setTab]             = useState("details");
+  const [pendingDecision,setPendingDecision] = useState(null); // {stage,label,color,bg}
+  const [decisionNotes,setDecisionNotes]     = useState("");
   const clashes      = clashCheck(change,allChanges);
   const openTasks    = (change.tasks||[]).filter(t=>!["Completed","Cancelled"].includes(t.status));
   const tmpl         = change.templateId?(templates||[]).find(t=>t.id===change.templateId):null;
@@ -236,6 +238,7 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
               <FieldRow label="Justification" value={change.justification}/>
               <FieldRow label="Impact"        value={change.impact}/>
               <FieldRow label="Rollback plan" value={change.rollback}/>
+              {change.cabNotes&&<FieldRow label="CAB decision notes" value={change.cabNotes}/>}
               {change.reviewNotes&&<FieldRow label="Review notes" value={change.reviewNotes}/>}
             </div>
             {(canStartImpl||canEndImpl)&&(
@@ -247,11 +250,44 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
             )}
             {canSetOutcome&&<ReviewPanel change={change} onFieldUpdate={onFieldUpdate} onStageChange={onStageChange}/>}
             {managerActions.length>0&&(
-              <div style={{padding:"1rem 1.25rem",borderTop:"0.5px solid var(--color-border-tertiary)",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
-                <span style={{fontSize:12,color:"var(--color-text-secondary)",marginRight:4}}>Decision:</span>
-                {managerActions.map(([stage,label,color,bg])=>(
-                  <button key={stage} onClick={()=>onStageChange(change.id,stage)} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:bg,color,border:`0.5px solid ${color}`,borderRadius:8,fontWeight:500}}>{label}</button>
-                ))}
+              <div style={{borderTop:"0.5px solid var(--color-border-tertiary)"}}>
+                {!pendingDecision
+                  ? <div style={{padding:"1rem 1.25rem",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+                      <span style={{fontSize:12,color:"var(--color-text-secondary)",marginRight:4}}>Decision:</span>
+                      {managerActions.map(([stage,label,color,bg])=>(
+                        <button key={stage} onClick={()=>{setPendingDecision({stage,label,color,bg});setDecisionNotes("");}}
+                          style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:bg,color,border:`0.5px solid ${color}`,borderRadius:8,fontWeight:500}}>{label}</button>
+                      ))}
+                    </div>
+                  : <div style={{padding:"1rem 1.25rem",background:pendingDecision.bg+"55"}}>
+                      <div style={{fontSize:13,fontWeight:600,color:pendingDecision.color,marginBottom:10}}>
+                        {pendingDecision.label} — confirm decision
+                      </div>
+                      <div style={{marginBottom:10}}>
+                        <label style={{fontSize:12,fontWeight:500,color:"var(--color-text-secondary)",display:"block",marginBottom:5}}>
+                          Notes {["Rejected","Reject"].includes(pendingDecision.label)?"*":"(optional)"}
+                        </label>
+                        <textarea value={decisionNotes} onChange={e=>setDecisionNotes(e.target.value)} rows={3}
+                          placeholder={pendingDecision.stage==="Rejected"?"State the reason for rejection…":"Any conditions, comments or observations…"}
+                          style={{width:"100%",boxSizing:"border-box",fontSize:13,borderRadius:8,border:`0.5px solid ${pendingDecision.color}`,padding:"8px 10px",background:"white",color:"var(--color-text-primary)",resize:"vertical",lineHeight:1.5}}/>
+                      </div>
+                      <div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
+                        <button onClick={()=>{setPendingDecision(null);setDecisionNotes("");}}
+                          style={{fontSize:12,padding:"7px 14px",cursor:"pointer",borderRadius:8,border:"0.5px solid var(--color-border-secondary)",background:"none",color:"var(--color-text-secondary)"}}>Cancel</button>
+                        <button
+                          disabled={pendingDecision.stage==="Rejected"&&!decisionNotes.trim()}
+                          onClick={()=>{
+                            const notes=decisionNotes.trim()||null;
+                            if(notes) onFieldUpdate(change.id,{cabNotes:notes});
+                            onStageChange(change.id,pendingDecision.stage);
+                            setPendingDecision(null);setDecisionNotes("");
+                          }}
+                          style={{fontSize:12,padding:"7px 16px",cursor:pendingDecision.stage==="Rejected"&&!decisionNotes.trim()?"not-allowed":"pointer",background:pendingDecision.color,color:"white",border:"none",borderRadius:8,fontWeight:500,opacity:pendingDecision.stage==="Rejected"&&!decisionNotes.trim()?0.5:1}}>
+                          Confirm {pendingDecision.label.toLowerCase()}
+                        </button>
+                      </div>
+                    </div>
+                }
               </div>
             )}
           </div>

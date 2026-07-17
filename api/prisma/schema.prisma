@@ -25,6 +25,7 @@ model Change {
   stage        String   @default("New")
   outcome      String?
   reviewNotes  String?
+  cabNotes     String?
   attachments  Json     @default("[]")
   cabVotes     Json     @default("{}")
   templateId   String?
