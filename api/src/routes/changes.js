@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
     const {
       title, type, description, justification, risk,
       impact, plannedStart, plannedEnd, rollback, service,
-      attachments, templateId, requester,
+      attachments, templateId, requester, stage,
     } = req.body;
 
     const change = await prisma.change.create({
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
         attachments:  attachments  || [],
         templateId:   templateId   || null,
         requester:    requester    || "Unknown",
-        stage: "New",
+        stage:        stage        || "New",
         cabVotes: {},
       },
       ...withTasks,
