@@ -109,7 +109,13 @@ export default function SubmitChange({form,setForm,onSubmit,onCancel,templates})
       </div>
       <div style={{display:"flex",gap:8,marginTop:"1rem",justifyContent:"flex-end"}}>
         <button onClick={onCancel} style={{fontSize:13,padding:"7px 16px",cursor:"pointer",borderRadius:8,border:"0.5px solid var(--color-border-secondary)",background:"none",color:"var(--color-text-secondary)"}}>Cancel</button>
-        <button onClick={onSubmit} style={{fontSize:13,padding:"7px 16px",cursor:"pointer",background:"#E8312A",color:"white",border:"none",borderRadius:8,fontWeight:600}}>Submit change</button>
+        {form.type==="Standard"&&form.templateId
+          ? <button onClick={()=>onSubmit("Approved")} style={{fontSize:13,padding:"7px 16px",cursor:"pointer",background:"#E8312A",color:"white",border:"none",borderRadius:8,fontWeight:600}}>Submit change</button>
+          : <>
+              <button onClick={()=>onSubmit("New")} style={{fontSize:13,padding:"7px 16px",cursor:"pointer",borderRadius:8,border:"0.5px solid var(--color-border-secondary)",background:"none",color:"var(--color-text-secondary)"}}>Save</button>
+              <button onClick={()=>onSubmit("Awaiting CAB")} style={{fontSize:13,padding:"7px 16px",cursor:"pointer",background:"#E8312A",color:"white",border:"none",borderRadius:8,fontWeight:600}}>Send to CAB</button>
+            </>
+        }
       </div>
     </div>
   );

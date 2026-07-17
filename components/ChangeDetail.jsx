@@ -172,6 +172,20 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
     }
   }
 
+  // Owner stage navigation (shown on My Changes for any role)
+  const OWNER_NEXT = {
+    "New":            ["Awaiting CAB",  "Send to CAB",            "#534AB7","#EEEDFE"],
+    "Approved":       ["Implementation","Begin implementation",    "#854F0B","#FAEEDA"],
+    "Review":         ["Completed",     "Close change",            "#085041","#E1F5EE"],
+  };
+  const OWNER_PREV = {
+    "Awaiting CAB":   ["New",           "Withdraw from CAB",       "#475569","#f1f5f9"],
+    "Implementation": ["Approved",      "Return to approved",      "#534AB7","#EEEDFE"],
+    "Review":         ["Implementation","Return to implementation", "#854F0B","#FAEEDA"],
+  };
+  const ownerNext = isOwner ? OWNER_NEXT[change.stage] : null;
+  const ownerPrev = isOwner ? OWNER_PREV[change.stage] : null;
+
   const canStartImpl  = (isOwner||role==="Change Manager")&&change.stage==="Implementation"&&!change.actualStart;
   const canEndImpl    = (isOwner||role==="Change Manager")&&change.stage==="Implementation"&&change.actualStart&&!change.actualEnd;
   const canSetOutcome = (isOwner||role==="Change Manager")&&change.stage==="Review"&&!change.outcome;
@@ -249,7 +263,27 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
               </div>
             )}
             {canSetOutcome&&<ReviewPanel change={change} onFieldUpdate={onFieldUpdate} onStageChange={onStageChange}/>}
-            {managerActions.length>0&&(
+            {isOwner&&(ownerNext||ownerPrev)&&(
+              <div style={{borderTop:"0.5px solid var(--color-border-tertiary)",padding:"1rem 1.25rem",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center",justifyContent:"space-between"}}>
+                <div style={{display:"flex",gap:8}}>
+                  {ownerPrev&&(()=>{const[s,label,color,bg]=ownerPrev;return(
+                    <button onClick={()=>onStageChange(change.id,s)}
+                      style={{fontSize:12,padding:"7px 14px",cursor:"pointer",background:bg,color,border:`0.5px solid ${color}`,borderRadius:8,fontWeight:500}}>
+                      ← {label}
+                    </button>
+                  );})()}
+                </div>
+                <div style={{display:"flex",gap:8}}>
+                  {ownerNext&&(()=>{const[s,label,color,bg]=ownerNext;return(
+                    <button onClick={()=>onStageChange(change.id,s)}
+                      style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:bg,color,border:`0.5px solid ${color}`,borderRadius:8,fontWeight:500}}>
+                      {label} →
+                    </button>
+                  );})()}
+                </div>
+              </div>
+            )}
+            {!isOwner&&managerActions.length>0&&(
               <div style={{borderTop:"0.5px solid var(--color-border-tertiary)"}}>
                 {!pendingDecision
                   ? <div style={{padding:"1rem 1.25rem",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
