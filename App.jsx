@@ -55,10 +55,11 @@ export default function App(){
   // ── Handlers ─────────────────────────────────────────────────────────────────
   async function submitChange(){
     if(!form.title||!form.description||!form.plannedStart||!form.plannedEnd)return;
+    const initialStage = (form.type==="Standard"&&form.templateId) ? "Approved" : "Awaiting CAB";
     const res = await fetch(`${API}/changes`,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({...form, requester: userName}),
+      body:JSON.stringify({...form, requester: userName, stage: initialStage}),
     });
     const created = await res.json();
     setChanges(p=>[created,...p]);
