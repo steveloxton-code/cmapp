@@ -62,10 +62,10 @@ export default function Dashboard({stats,changes,onFilter,onSelectChange}){
         ))}
       </div>
       <div style={{marginBottom:"1rem"}}>
-        <div style={{background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:14,padding:"1.25rem"}}>
+        <div style={{background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:14,padding:"1.25rem",maxWidth:420}}>
           <div style={{fontSize:13,fontWeight:600,marginBottom:16}}>Changes by risk</div>
-          <div style={{display:"flex",alignItems:"center",gap:18,maxWidth:460}}>
-            <svg width="120" height="120" viewBox="0 0 120 120" style={{flexShrink:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:18}}>
+            <svg width="120" height="120" viewBox="-4 -4 128 128" style={{flexShrink:0}}>
               <circle cx="60" cy="60" r={DONUT_R} fill="none" stroke="var(--color-background-secondary)" strokeWidth={DONUT_STROKE}/>
               <g transform="rotate(-90 60 60)">
                 {donutSegs.filter(s=>s.count>0).map(s=>(
