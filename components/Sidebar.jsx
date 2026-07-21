@@ -31,7 +31,7 @@ export default function Sidebar({view,role,pendingCABCount,openTaskCount,pending
     Change Management
   </div>
 
-</div>
+</div>)
 
       <nav style={{padding:"12px 10px",flex:1}}>
         {NAV.map(({id,label,icon})=>{
