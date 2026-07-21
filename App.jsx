@@ -6,6 +6,7 @@ import Dashboard        from "./components/Dashboard.jsx";
 import ChangeRegister   from "./components/ChangeRegister.jsx";
 import ChangeDetail     from "./components/ChangeDetail.jsx";
 import CABView          from "./components/CABView.jsx";
+import TemplateDetail   from "./components/TemplateDetail.jsx";
 import GanttChart       from "./components/GanttChart.jsx";
 import MyChanges        from "./components/MyChanges.jsx";
 import MyTasks          from "./components/MyTasks.jsx";
@@ -33,6 +34,9 @@ export default function App(){
   const [cabOrder,setCabOrder]   = useState([]); // change IDs, chair-defined CAB discussion order
   const [cabMeetingStage,setCabMeetingStage] = useState("setup"); // "setup" | "running" | "ended"
   const [cabMeetingStartedAt,setCabMeetingStartedAt] = useState(null);
+  const [meetingAgenda,setMeetingAgenda] = useState([]); // [{kind:"change"|"template"|"review", id}]
+  const [meetingIndex,setMeetingIndex]   = useState(0);
+  const [meetingOpen,setMeetingOpen]     = useState(false); // showing the full-screen agenda item vs the CAB Board list
   const [filterType,setFilterType]   = useState("All");
   const [filterStage,setFilterStage] = useState("All");
 
@@ -151,22 +155,38 @@ export default function App(){
   function reorderCab(newOrderIds){ setCabOrder(newOrderIds); }
 
   function startCabMeeting(){
-    if(cabOrder.length===0) return;
+    const agenda = [
+      ...cabOrder.filter(id=>changes.some(c=>c.id===id&&c.stage==="Awaiting CAB")).map(id=>({kind:"change",id})),
+      ...pendingTmpls.map(t=>({kind:"template",id:t.id})),
+      ...prevWeek.map(c=>({kind:"review",id:c.id})),
+    ];
+    if(agenda.length===0) return;
+    setMeetingAgenda(agenda);
+    setMeetingIndex(0);
     setCabMeetingStartedAt(new Date().toISOString());
     setCabMeetingStage("running");
-    const first = changes.find(c=>c.id===cabOrder[0]);
-    if(first) setSelected(first);
+    setMeetingOpen(true);
   }
 
-  function resumeCabMeeting(){
-    const next = cabOrder.map(id=>changes.find(c=>c.id===id)).find(c=>c&&c.stage==="Awaiting CAB");
-    const first = next || changes.find(c=>c.id===cabOrder[0]);
-    if(first) setSelected(first);
+  function meetingPrev(){ if(meetingIndex>0) setMeetingIndex(meetingIndex-1); }
+
+  function meetingNext(){
+    if(meetingIndex<meetingAgenda.length-1){
+      setMeetingIndex(meetingIndex+1);
+    } else {
+      setCabMeetingStage("ended");
+      setMeetingOpen(false);
+    }
   }
+
+  function resumeCabMeeting(){ setMeetingOpen(true); }
 
   function resetCabMeeting(){
     setCabMeetingStage("setup");
     setCabMeetingStartedAt(null);
+    setMeetingAgenda([]);
+    setMeetingIndex(0);
+    setMeetingOpen(false);
     setCabTab("pending");
   }
 
@@ -180,8 +200,10 @@ export default function App(){
   const prevWeek      = changes.filter(c=>{const d=c.plannedEnd?new Date(c.plannedEnd):null;return d&&d>=oneWeekAgo()&&d<=new Date()&&["Normal","Emergency"].includes(c.type)&&["Completed","Rejected"].includes(c.stage);});
   const selChange     = selected?(changes.find(c=>c.id===selected.id)||selected):null;
   const orderedCab     = cabOrder.map(id=>changes.find(c=>c.id===id)).filter(Boolean);
-  const cabQueue       = cabMeetingStage==="setup" ? pendingCAB : orderedCab;
-  const cabIndex       = selChange ? cabQueue.findIndex(c=>c.id===selChange.id) : -1;
+  const meetingShowing = cabMeetingStage==="running"&&meetingOpen;
+  const currentAgendaEntry = meetingShowing ? meetingAgenda[meetingIndex] : null;
+  const currentAgendaChange   = currentAgendaEntry&&currentAgendaEntry.kind!=="template" ? changes.find(c=>c.id===currentAgendaEntry.id) : null;
+  const currentAgendaTemplate = currentAgendaEntry&&currentAgendaEntry.kind==="template" ? templates.find(t=>t.id===currentAgendaEntry.id) : null;
   const stats = {
     total:      changes.length,
     pending:    changes.filter(c=>c.stage==="New"||c.stage==="Awaiting CAB").length,
@@ -221,7 +243,7 @@ export default function App(){
         <div style={{background:"var(--color-background-primary)",borderBottom:"0.5px solid var(--color-border-tertiary)",padding:"0 1.5rem",height:52,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
           <div>
             <span style={{fontSize:15,fontWeight:500}}>{NAV.find(n=>n.id===view)?.label}</span>
-            {selChange&&<><span style={{fontSize:13,color:"var(--color-text-tertiary)",margin:"0 6px"}}>/</span><span style={{fontSize:13,color:"var(--color-text-secondary)"}}>{selChange.id}</span></>}
+            {(selChange||currentAgendaEntry)&&<><span style={{fontSize:13,color:"var(--color-text-tertiary)",margin:"0 6px"}}>/</span><span style={{fontSize:13,color:"var(--color-text-secondary)"}}>{currentAgendaEntry?currentAgendaEntry.id:selChange.id}</span></>}
           </div>
           {(view==="register"||view==="mychanges")&&!selChange&&(role==="Requester"||role==="Change Manager")&&(
             <button onClick={()=>setShowForm(!showForm)} style={{display:"flex",alignItems:"center",gap:6,fontSize:13,padding:"6px 14px",cursor:"pointer",background:"#E8312A",color:"white",border:"none",borderRadius:8,fontWeight:500}}>
@@ -242,12 +264,42 @@ export default function App(){
             />
           )}
 
-          {view==="cab"&&!selChange&&(
+          {view==="cab"&&meetingShowing&&currentAgendaEntry?.kind==="template"&&(
+            <TemplateDetail
+              template={currentAgendaTemplate}
+              role={role}
+              onUpdateStatus={updateTemplateStatus}
+              onBack={()=>setMeetingOpen(false)}
+              queueIndex={meetingIndex}
+              queueTotal={meetingAgenda.length}
+              onPrev={meetingIndex>0?meetingPrev:null}
+              onNext={meetingNext}
+            />
+          )}
+          {view==="cab"&&meetingShowing&&currentAgendaEntry?.kind!=="template"&&(
+            <ChangeDetail
+              change={currentAgendaChange}
+              role={role}
+              allChanges={changes}
+              templates={templates}
+              onBack={()=>setMeetingOpen(false)}
+              onStageChange={updateStage}
+              onFieldUpdate={updateField}
+              onAddTask={addTask}
+              onUpdateTask={updateTask}
+              queueIndex={meetingIndex}
+              queueTotal={meetingAgenda.length}
+              onPrev={meetingIndex>0?meetingPrev:null}
+              onNext={meetingNext}
+            />
+          )}
+          {view==="cab"&&!meetingShowing&&!selChange&&(
             <CABView
               orderedCab={orderedCab}
               cabOrder={cabOrder}
               onReorder={reorderCab}
               meetingStage={cabMeetingStage}
+              meetingAgenda={meetingAgenda}
               meetingStartedAt={cabMeetingStartedAt}
               onStartMeeting={startCabMeeting}
               onResumeMeeting={resumeCabMeeting}
@@ -258,11 +310,12 @@ export default function App(){
               role={role}
               onSelect={setSelected}
               allChanges={changes}
+              allTemplates={templates}
               pendingTmpls={pendingTmpls}
               onUpdateTemplateStatus={updateTemplateStatus}
             />
           )}
-          {view==="cab"&&selChange&&(
+          {view==="cab"&&!meetingShowing&&selChange&&(
             <ChangeDetail
               change={selChange}
               role={role}
@@ -273,13 +326,6 @@ export default function App(){
               onFieldUpdate={updateField}
               onAddTask={addTask}
               onUpdateTask={updateTask}
-              queueIndex={cabMeetingStage!=="setup"?cabIndex:undefined}
-              queueTotal={cabMeetingStage!=="setup"?cabQueue.length:undefined}
-              onPrev={cabMeetingStage!=="setup"&&cabIndex>0?()=>setSelected(cabQueue[cabIndex-1]):null}
-              onNext={cabMeetingStage!=="setup"&&cabIndex>=0?()=>{
-                if(cabIndex<cabQueue.length-1){ setSelected(cabQueue[cabIndex+1]); }
-                else { setCabMeetingStage("ended"); setCabTab("outcome"); setSelected(null); }
-              }:null}
             />
           )}
 
