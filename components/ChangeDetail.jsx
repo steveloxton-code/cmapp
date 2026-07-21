@@ -151,7 +151,7 @@ function ChangeTasksPanel({change,onAddTask,onUpdateTask}){
 }
 
 // ── Change detail ─────────────────────────────────────────────────────────────
-export default function ChangeDetail({change,role,allChanges,templates,onBack,onStageChange,onFieldUpdate,onAddTask,onUpdateTask,isOwner}){
+export default function ChangeDetail({change,role,allChanges,templates,onBack,onStageChange,onFieldUpdate,onAddTask,onUpdateTask,isOwner,queueIndex,queueTotal,onPrev,onNext}){
   const [tab,setTab]             = useState("details");
   const [pendingDecision,setPendingDecision] = useState(null); // {stage,label,color,bg}
   const [decisionNotes,setDecisionNotes]     = useState("");
@@ -192,9 +192,25 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
 
   return (
     <div>
-      <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:5,fontSize:13,marginBottom:"1rem",cursor:"pointer",background:"none",border:"none",color:"var(--color-text-secondary)",padding:0}}>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Back
-      </button>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"1rem"}}>
+        <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:5,fontSize:13,cursor:"pointer",background:"none",border:"none",color:"var(--color-text-secondary)",padding:0}}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Back
+        </button>
+        {typeof queueTotal==="number"&&queueTotal>0&&queueIndex>=0&&(()=>{
+          const isLast = queueIndex>=queueTotal-1;
+          return (
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <span style={{fontSize:12,color:"var(--color-text-secondary)",fontWeight:500}}>Item {queueIndex+1} of {queueTotal}</span>
+              <button onClick={onPrev} disabled={!onPrev} style={{display:"flex",alignItems:"center",gap:4,fontSize:12,padding:"6px 12px",cursor:onPrev?"pointer":"not-allowed",background:"var(--color-background-secondary)",border:"0.5px solid var(--color-border-secondary)",borderRadius:8,color:"var(--color-text-secondary)",opacity:onPrev?1:0.4,fontWeight:500}}>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Prev
+              </button>
+              <button onClick={onNext} style={{display:"flex",alignItems:"center",gap:4,fontSize:12,padding:"6px 12px",cursor:"pointer",background:"#534AB7",border:"none",borderRadius:8,color:"white",fontWeight:500}}>
+                {isLast?"Finish":"Next"}<svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
+          );
+        })()}
+      </div>
       <StageProgress stage={change.stage}/>
       {clashes.length>0&&(
         <div style={{background:"#FAEEDA",border:"0.5px solid #EF9F27",borderRadius:10,padding:"12px 16px",marginBottom:"1rem"}}>
@@ -315,6 +331,7 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
                             if(notes) onFieldUpdate(change.id,{cabNotes:notes});
                             onStageChange(change.id,pendingDecision.stage);
                             setPendingDecision(null);setDecisionNotes("");
+                            if(onNext) onNext();
                           }}
                           style={{fontSize:12,padding:"7px 16px",cursor:pendingDecision.stage==="Rejected"&&!decisionNotes.trim()?"not-allowed":"pointer",background:pendingDecision.color,color:"white",border:"none",borderRadius:8,fontWeight:500,opacity:pendingDecision.stage==="Rejected"&&!decisionNotes.trim()?0.5:1}}>
                           Confirm {pendingDecision.label.toLowerCase()}

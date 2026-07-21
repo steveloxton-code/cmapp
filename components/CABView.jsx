@@ -28,6 +28,15 @@ export default function CABView({pendingCAB,prevWeek,cabTab,setCabTab,role,onSel
                   </div>
                   <div style={{fontSize:14,fontWeight:500,marginBottom:6}}>{item.title}</div>
                   <div style={{display:"flex",gap:16,fontSize:12,color:"var(--color-text-secondary)"}}><span>{item.service}</span><span>·</span><span>{fmtDate(item.plannedStart)} → {fmtDate(item.plannedEnd)}</span></div>
+                  {clashes.length>0&&(
+                    <div style={{marginTop:8,paddingTop:8,borderTop:"0.5px solid #EF9F27"}}>
+                      {clashes.map(cl=>(
+                        <div key={cl.id} style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:"#854F0B",marginTop:2}}>
+                          <span style={{fontWeight:600}}>{cl.id}</span><span>{cl.title}</span><span>·</span><span>{fmtDate(cl.plannedStart)} → {fmtDate(cl.plannedEnd)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })}

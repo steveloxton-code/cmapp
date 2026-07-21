@@ -142,6 +142,8 @@ export default function App(){
   const pendingTmpls  = templates.filter(t=>t.status==="Pending CAB Approval");
   const prevWeek      = changes.filter(c=>{const d=c.plannedEnd?new Date(c.plannedEnd):null;return d&&d>=oneWeekAgo()&&["Completed","Rejected"].includes(c.stage);});
   const selChange     = selected?(changes.find(c=>c.id===selected.id)||selected):null;
+  const cabQueue       = cabTab==="previous" ? prevWeek : pendingCAB;
+  const cabIndex       = selChange ? cabQueue.findIndex(c=>c.id===selChange.id) : -1;
   const stats = {
     total:      changes.length,
     pending:    changes.filter(c=>c.stage==="New"||c.stage==="Awaiting CAB").length,
@@ -226,6 +228,10 @@ export default function App(){
               onFieldUpdate={updateField}
               onAddTask={addTask}
               onUpdateTask={updateTask}
+              queueIndex={cabIndex}
+              queueTotal={cabQueue.length}
+              onPrev={cabIndex>0?()=>setSelected(cabQueue[cabIndex-1]):null}
+              onNext={cabIndex>=0?()=>setSelected(cabIndex<cabQueue.length-1?cabQueue[cabIndex+1]:null):null}
             />
           )}
 
