@@ -405,9 +405,7 @@ export default function App(){
           {view==="templates"&&(
             <StandardTemplates
               templates={templates}
-              role={role}
               onSubmitTemplate={submitTemplate}
-              onUpdateStatus={updateTemplateStatus}
             />
           )}
 

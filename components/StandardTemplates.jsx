@@ -2,7 +2,7 @@ import { useState } from "react";
 import { RISK_LEVELS, initTmpl } from "../constants.jsx";
 import { RiskBadge, TmplBadge, FieldRow } from "./Shared.jsx";
 
-export default function StandardTemplates({templates,role,onSubmitTemplate,onUpdateStatus}){
+export default function StandardTemplates({templates,onSubmitTemplate}){
   const [tab,setTab]         = useState("approved");
   const [showForm,setShowForm] = useState(false);
   const [form,setForm]       = useState(initTmpl());
@@ -11,7 +11,6 @@ export default function StandardTemplates({templates,role,onSubmitTemplate,onUpd
   const approved = templates.filter(t=>t.status==="Approved");
   const pending  = templates.filter(t=>t.status==="Pending CAB Approval");
   const rejected = templates.filter(t=>t.status==="Rejected");
-  const canApprove = role==="Change Manager"||role==="CAB Approver";
   const inp = {width:"100%",boxSizing:"border-box",fontSize:13,borderRadius:8,border:"0.5px solid var(--color-border-secondary)",padding:"8px 10px",background:"var(--color-background-secondary)",color:"var(--color-text-primary)"};
 
   function submit(){
@@ -51,11 +50,9 @@ export default function StandardTemplates({templates,role,onSubmitTemplate,onUpd
             <FieldRow label="Rollback plan"    value={selected.rollback}/>
             {selected.rationale&&<FieldRow label="Template rationale" value={selected.rationale}/>}
           </div>
-          {canApprove&&selected.status==="Pending CAB Approval"&&(
-            <div style={{padding:"1rem 1.25rem",borderTop:"0.5px solid var(--color-border-tertiary)",display:"flex",gap:8,alignItems:"center"}}>
-              <span style={{fontSize:12,color:"var(--color-text-secondary)",marginRight:4}}>CAB decision:</span>
-              <button onClick={()=>{onUpdateStatus(selected.id,"Approved");setSelected(p=>({...p,status:"Approved",approvedAt:new Date().toISOString().slice(0,10)}));}} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:"#EAF3DE",color:"#27500A",border:"0.5px solid #27500A",borderRadius:8,fontWeight:500}}>Approve — add to library</button>
-              <button onClick={()=>{onUpdateStatus(selected.id,"Rejected");setSelected(p=>({...p,status:"Rejected"}));}} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:"#FCEBEB",color:"#791F1F",border:"0.5px solid #791F1F",borderRadius:8,fontWeight:500}}>Reject</button>
+          {selected.status==="Pending CAB Approval"&&(
+            <div style={{padding:"1rem 1.25rem",borderTop:"0.5px solid var(--color-border-tertiary)"}}>
+              <span style={{fontSize:12,color:"var(--color-text-secondary)"}}>Approval decisions for template proposals are made during the CAB meeting.</span>
             </div>
           )}
         </div>
@@ -121,13 +118,7 @@ export default function StandardTemplates({templates,role,onSubmitTemplate,onUpd
             {pending.map(t=>(
               <div key={t.id} onClick={()=>setSelected(t)} onMouseEnter={e=>e.currentTarget.style.background="var(--color-background-secondary)"} onMouseLeave={e=>e.currentTarget.style.background="var(--color-background-primary)"}
                 style={{background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:14,padding:"1rem 1.25rem",cursor:"pointer"}}>
-                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:11,fontWeight:600,color:"#534AB7"}}>{t.id}</span><RiskBadge risk={t.risk}/><TmplBadge status={t.status}/></div>
-                  {canApprove&&<div style={{display:"flex",gap:6}} onClick={e=>e.stopPropagation()}>
-                    <button onClick={()=>onUpdateStatus(t.id,"Approved")} style={{fontSize:11,padding:"4px 10px",cursor:"pointer",background:"#EAF3DE",color:"#27500A",border:"0.5px solid #27500A",borderRadius:6,fontWeight:500}}>Approve</button>
-                    <button onClick={()=>onUpdateStatus(t.id,"Rejected")} style={{fontSize:11,padding:"4px 10px",cursor:"pointer",background:"#FCEBEB",color:"#791F1F",border:"0.5px solid #791F1F",borderRadius:6,fontWeight:500}}>Reject</button>
-                  </div>}
-                </div>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontSize:11,fontWeight:600,color:"#534AB7"}}>{t.id}</span><RiskBadge risk={t.risk}/><TmplBadge status={t.status}/></div>
                 <div style={{fontSize:14,fontWeight:500,marginBottom:4}}>{t.title}</div>
                 <div style={{fontSize:12,color:"var(--color-text-secondary)"}}>{t.service} · Proposed by {t.proposedBy} on {t.proposedAt}</div>
               </div>
