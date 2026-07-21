@@ -15,7 +15,7 @@ export default function LoginScreen({onLogin}){
       <div style={{position:"absolute",top:"20%",left:"50%",transform:"translateX(-50%)",width:600,height:300,background:"radial-gradient(ellipse,rgba(83,74,183,0.18) 0%,transparent 70%)",pointerEvents:"none"}}/>
       <div style={{position:"relative",width:"100%",maxWidth:480,padding:"0 1.5rem"}}>
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:"2.5rem"}}>
-          <img src="/fibrus-white.svg" alt="Ogi" style={{height:64,marginBottom:16}}/>
+          <img src="/fibrus-white.svg" alt="Ogi" style={{height:64,marginBottom:4}}/>
           <img src="/ogi-logo.svg" alt="Ogi" style={{height:64,marginBottom:16}}/>
           <h1 style={{fontSize:22,fontWeight:700,color:"white",margin:"0 0 6px",letterSpacing:"-0.02em"}}>Change Management</h1>
           <p style={{fontSize:14,color:"rgba(255,255,255,0.45)",margin:0}}>Select your account to continue</p>
