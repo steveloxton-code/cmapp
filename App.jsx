@@ -198,6 +198,7 @@ export default function App(){
               stats={stats}
               changes={changes}
               onFilter={(type,stage)=>{setFilterType(type||"All");setFilterStage(stage||"All");setView("register");setSelected(null);}}
+              onSelectChange={c=>{setSelected(c);setView("register");}}
             />
           )}
 
