@@ -7,12 +7,31 @@ export default function Sidebar({view,role,pendingCABCount,openTaskCount,pending
   const userInitials  = role==="Requester"?"RE":role==="Change Manager"?"CM":"CA";
 
   return (
-    <div style={{width:220,flexShrink:0,background:"#1a1a2e",display:"flex",flexDirection:"column",minHeight:"100vh",position:"sticky",top:0}}>
-      <div style={{padding:"20px 20px 16px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-        <img src="/fibrus-white.svg" alt="Ogi" style={{height:64}}/>
-        <img src="/ogi-logo.svg" alt="Ogi" style={{height:64}}/>
-        <div style={{fontSize:11,color:SM,marginTop:8,fontWeight:500,letterSpacing:"0.06em",textTransform:"uppercase"}}>Change Management</div>
-      </div>
+    <div style={{
+  padding: "20px 20px 16px",
+  borderBottom: "1px solid rgba(255,255,255,0.08)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",     // Centers images and text horizontally
+  gap: "12px"               // Space between elements
+}}>
+  
+  <img src="/fibrus-white.svg" alt="Fibrus" style={{ height: 64 }} />
+  <img src="/ogi-logo.svg" alt="Ogi" style={{ height: 64 }} />
+
+  <div style={{
+    fontSize: 11,
+    color: SM,
+    marginTop: 8,
+    fontWeight: 500,
+    letterSpacing: "0.06em",
+    textTransform: "uppercase",
+    textAlign: "center"       // Ensures text is centered
+  }}>
+    Change Management
+  </div>
+
+</div>
 
       <nav style={{padding:"12px 10px",flex:1}}>
         {NAV.map(({id,label,icon})=>{
