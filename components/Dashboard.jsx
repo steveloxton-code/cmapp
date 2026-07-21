@@ -13,7 +13,6 @@ export default function Dashboard({stats,changes,onFilter}){
   ];
   return (
     <div>
-      <p style={{fontSize:13,color:"var(--color-text-secondary)",margin:"0 0 1.25rem"}}>Click any element to filter the change register</p>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:"1.5rem"}}>
         {cards.map(({label,value,grad,stage,type})=>(
           <div key={label} onClick={()=>onFilter(type,stage)} onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
