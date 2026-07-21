@@ -15,7 +15,18 @@ export default function Dashboard({stats,changes,onFilter,onSelectChange}){
   const byRisk  = RISK_LEVELS.map(r=>({risk:r,count:changes.filter(c=>c.risk===r).length}));
   const byStage = STAGES.filter(s=>changes.some(c=>c.stage===s)).map(s=>({stage:s,count:changes.filter(c=>c.stage===s).length}));
   const maxType  = Math.max(...byType.map(x=>x.count),1);
-  const maxRisk  = Math.max(...byRisk.map(x=>x.count),1);
+  const riskTotal = byRisk.reduce((s,x)=>s+x.count,0);
+  const DONUT_R = 52, DONUT_STROKE = 22, DONUT_GAP = 3;
+  const DONUT_CIRC = 2*Math.PI*DONUT_R;
+  let _cum = 0;
+  const donutSegs = byRisk.map(({risk,count})=>{
+    const frac    = riskTotal>0 ? count/riskTotal : 0;
+    const len     = frac*DONUT_CIRC;
+    const visible = Math.max(len-DONUT_GAP,0);
+    const seg     = {risk,count,pct:riskTotal>0?Math.round(frac*100):0,dasharray:`${visible} ${DONUT_CIRC-visible}`,dashoffset:-_cum};
+    _cum += len;
+    return seg;
+  });
   const cards = [
     {label:"Total changes",    value:stats.total,      grad:"135deg,#6C63FF,#534AB7",stage:null,type:null,             icon:ICONS.total},
     {label:"Pending / New",    value:stats.pending,    grad:"135deg,#F4A541,#BA7517",stage:"Pending",type:null,        icon:ICONS.pending},
@@ -70,16 +81,36 @@ export default function Dashboard({stats,changes,onFilter,onSelectChange}){
         </div>
         <div style={{background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:14,padding:"1.25rem"}}>
           <div style={{fontSize:13,fontWeight:600,marginBottom:16}}>Changes by risk</div>
-          {byRisk.map(({risk,count})=>(
-            <div key={risk} style={{marginBottom:10,padding:"7px 10px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-                <RiskBadge risk={risk}/><span style={{fontSize:12,fontWeight:500,color:"var(--color-text-secondary)"}}>{count}</span>
-              </div>
-              <div style={{height:5,background:"var(--color-background-secondary)",borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${(count/maxRisk)*100}%`,height:"100%",background:RISK_C[risk],borderRadius:3,minWidth:count>0?"6px":"0"}}/>
-              </div>
+          <div style={{display:"flex",alignItems:"center",gap:18}}>
+            <svg width="120" height="120" viewBox="0 0 120 120" style={{flexShrink:0}}>
+              <circle cx="60" cy="60" r={DONUT_R} fill="none" stroke="var(--color-background-secondary)" strokeWidth={DONUT_STROKE}/>
+              <g transform="rotate(-90 60 60)">
+                {donutSegs.filter(s=>s.count>0).map(s=>(
+                  <circle key={s.risk} cx="60" cy="60" r={DONUT_R} fill="none" stroke={RISK_C[s.risk]} strokeWidth={DONUT_STROKE}
+                    strokeDasharray={s.dasharray} strokeDashoffset={s.dashoffset} strokeLinecap="round"
+                    style={{transition:"stroke-width 0.15s",cursor:"default"}}
+                    onMouseEnter={e=>e.currentTarget.style.strokeWidth=DONUT_STROKE+4}
+                    onMouseLeave={e=>e.currentTarget.style.strokeWidth=DONUT_STROKE}>
+                    <title>{`${s.risk}: ${s.count} (${s.pct}%)`}</title>
+                  </circle>
+                ))}
+              </g>
+              <text x="60" y="57" textAnchor="middle" style={{fontSize:22,fontWeight:700,fill:"var(--color-text-primary)"}}>{riskTotal}</text>
+              <text x="60" y="73" textAnchor="middle" style={{fontSize:10,fill:"var(--color-text-tertiary)"}}>changes</text>
+            </svg>
+            <div style={{flex:1,minWidth:0}}>
+              {byRisk.map(({risk,count})=>{
+                const pct = riskTotal>0 ? Math.round(count/riskTotal*100) : 0;
+                return (
+                  <div key={risk} onMouseEnter={e=>e.currentTarget.style.background="var(--color-background-secondary)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}
+                    style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 8px",borderRadius:8,marginBottom:2}}>
+                    <RiskBadge risk={risk}/>
+                    <span style={{fontSize:12,fontWeight:500,color:"var(--color-text-secondary)"}}>{count} <span style={{color:"var(--color-text-tertiary)"}}>· {pct}%</span></span>
+                  </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </div>
         <div style={{background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:14,padding:"1.25rem"}}>
           <div style={{fontSize:13,fontWeight:600,marginBottom:16}}>Changes by stage</div>
