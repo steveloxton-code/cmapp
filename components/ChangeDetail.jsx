@@ -40,7 +40,7 @@ function StageProgress({stage}){
 }
 
 // ── Review panel ──────────────────────────────────────────────────────────────
-function ReviewPanel({change,onFieldUpdate,onStageChange}){
+function ReviewPanel({change,onFieldUpdate}){
   const [outcome,setOutcome] = useState(null);
   const [notes,setNotes]     = useState("");
   const duration = (()=>{
@@ -48,7 +48,7 @@ function ReviewPanel({change,onFieldUpdate,onStageChange}){
     const mins=Math.round((new Date(change.actualEnd)-new Date(change.actualStart))/60000);
     return `${mins} min${mins!==1?"s":""}`;
   })();
-  function submit(){if(!outcome)return;onFieldUpdate(change.id,{outcome,reviewNotes:notes.trim()||null});onStageChange(change.id,"Completed");}
+  function submit(){if(!outcome)return;onFieldUpdate(change.id,{outcome,reviewNotes:notes.trim()||null,stage:"Completed"});}
   const canSubmit = outcome&&(outcome==="Successful"||notes.trim());
   return (
     <div style={{margin:"1rem 1.25rem",background:"#E6F1FB",borderRadius:10,padding:"1rem",border:"0.5px solid #378ADD"}}>
@@ -275,10 +275,10 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
               <div style={{margin:"1rem 1.25rem",background:"#FAEEDA",borderRadius:10,padding:"1rem",border:"0.5px solid #EF9F27"}}>
                 <div style={{fontSize:13,fontWeight:600,color:"#633806",marginBottom:8}}>Implementation in progress</div>
                 {canStartImpl&&<div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:13,color:"#854F0B"}}>Record the actual start time to begin tracking.</span><button onClick={()=>onFieldUpdate(change.id,{actualStart:nowISO()})} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:"#854F0B",color:"white",border:"none",borderRadius:8,fontWeight:500,flexShrink:0}}>▶ Start now</button></div>}
-                {canEndImpl&&<div><div style={{fontSize:12,color:"#854F0B",marginBottom:8}}>Started: {fmtDate(change.actualStart)}</div><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:13,color:"#854F0B"}}>Mark implementation complete to move to review.</span><button onClick={()=>{onFieldUpdate(change.id,{actualEnd:nowISO()});onStageChange(change.id,"Review");}} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:"#534AB7",color:"white",border:"none",borderRadius:8,fontWeight:500,flexShrink:0}}>⏹ End & move to review</button></div></div>}
+                {canEndImpl&&<div><div style={{fontSize:12,color:"#854F0B",marginBottom:8}}>Started: {fmtDate(change.actualStart)}</div><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:13,color:"#854F0B"}}>Mark implementation complete to move to review.</span><button onClick={()=>onFieldUpdate(change.id,{actualEnd:nowISO(),stage:"Review"})} style={{fontSize:12,padding:"7px 16px",cursor:"pointer",background:"#534AB7",color:"white",border:"none",borderRadius:8,fontWeight:500,flexShrink:0}}>⏹ End & move to review</button></div></div>}
               </div>
             )}
-            {canSetOutcome&&<ReviewPanel change={change} onFieldUpdate={onFieldUpdate} onStageChange={onStageChange}/>}
+            {canSetOutcome&&<ReviewPanel change={change} onFieldUpdate={onFieldUpdate}/>}
             {isOwner&&(ownerNext||ownerPrev)&&(
               <div style={{borderTop:"0.5px solid var(--color-border-tertiary)",padding:"1rem 1.25rem",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{display:"flex",gap:8}}>
@@ -328,8 +328,7 @@ export default function ChangeDetail({change,role,allChanges,templates,onBack,on
                           disabled={pendingDecision.stage==="Rejected"&&!decisionNotes.trim()}
                           onClick={()=>{
                             const notes=decisionNotes.trim()||null;
-                            if(notes) onFieldUpdate(change.id,{cabNotes:notes});
-                            onStageChange(change.id,pendingDecision.stage);
+                            onFieldUpdate(change.id,{stage:pendingDecision.stage,...(notes?{cabNotes:notes}:{})});
                             setPendingDecision(null);setDecisionNotes("");
                             if(onNext) onNext();
                           }}

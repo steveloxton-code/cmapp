@@ -30,6 +30,9 @@ export default function App(){
   const [showForm,setShowForm]   = useState(false);
   const [form,setForm]           = useState(initForm());
   const [cabTab,setCabTab]       = useState("pending");
+  const [cabOrder,setCabOrder]   = useState([]); // change IDs, chair-defined CAB discussion order
+  const [cabMeetingStage,setCabMeetingStage] = useState("setup"); // "setup" | "running" | "ended"
+  const [cabMeetingStartedAt,setCabMeetingStartedAt] = useState(null);
   const [filterType,setFilterType]   = useState("All");
   const [filterStage,setFilterStage] = useState("All");
 
@@ -48,6 +51,18 @@ export default function App(){
       setLoading(false);
     });
   },[loggedIn]);
+
+  // ── Keep the CAB discussion order in sync with pending changes before a meeting starts ──
+  useEffect(()=>{
+    if(cabMeetingStage!=="setup") return;
+    setCabOrder(prev=>{
+      const ids   = changes.filter(c=>c.stage==="Awaiting CAB").map(c=>c.id);
+      const kept  = prev.filter(id=>ids.includes(id));
+      const added = ids.filter(id=>!prev.includes(id));
+      if(kept.length===prev.length&&added.length===0) return prev;
+      return [...kept,...added];
+    });
+  },[changes,cabMeetingStage]);
 
   // ── Current user name (derived from role) ─────────────────────────────────────
   const userName = USER_NAMES[role];
@@ -133,6 +148,28 @@ export default function App(){
 
   function navigate(v){ setView(v); setSelected(null); setShowForm(false); setForm(initForm()); }
 
+  function reorderCab(newOrderIds){ setCabOrder(newOrderIds); }
+
+  function startCabMeeting(){
+    if(cabOrder.length===0) return;
+    setCabMeetingStartedAt(new Date().toISOString());
+    setCabMeetingStage("running");
+    const first = changes.find(c=>c.id===cabOrder[0]);
+    if(first) setSelected(first);
+  }
+
+  function resumeCabMeeting(){
+    const next = cabOrder.map(id=>changes.find(c=>c.id===id)).find(c=>c&&c.stage==="Awaiting CAB");
+    const first = next || changes.find(c=>c.id===cabOrder[0]);
+    if(first) setSelected(first);
+  }
+
+  function resetCabMeeting(){
+    setCabMeetingStage("setup");
+    setCabMeetingStartedAt(null);
+    setCabTab("pending");
+  }
+
   // ── Derived values ────────────────────────────────────────────────────────────
   const pendingCAB    = changes.filter(c=>c.stage==="Awaiting CAB");
   const myChanges     = changes.filter(c=>c.requester===userName);
@@ -140,9 +177,10 @@ export default function App(){
   const openMyTasks   = myTasks.filter(t=>!["Completed","Cancelled"].includes(t.status));
   const approvedTmpls = templates.filter(t=>t.status==="Approved");
   const pendingTmpls  = templates.filter(t=>t.status==="Pending CAB Approval");
-  const prevWeek      = changes.filter(c=>{const d=c.plannedEnd?new Date(c.plannedEnd):null;return d&&d>=oneWeekAgo()&&["Completed","Rejected"].includes(c.stage);});
+  const prevWeek      = changes.filter(c=>{const d=c.plannedEnd?new Date(c.plannedEnd):null;return d&&d>=oneWeekAgo()&&d<=new Date()&&["Normal","Emergency"].includes(c.type)&&["Completed","Rejected"].includes(c.stage);});
   const selChange     = selected?(changes.find(c=>c.id===selected.id)||selected):null;
-  const cabQueue       = cabTab==="previous" ? prevWeek : pendingCAB;
+  const orderedCab     = cabOrder.map(id=>changes.find(c=>c.id===id)).filter(Boolean);
+  const cabQueue       = cabMeetingStage==="setup" ? pendingCAB : orderedCab;
   const cabIndex       = selChange ? cabQueue.findIndex(c=>c.id===selChange.id) : -1;
   const stats = {
     total:      changes.length,
@@ -206,7 +244,14 @@ export default function App(){
 
           {view==="cab"&&!selChange&&(
             <CABView
-              pendingCAB={pendingCAB}
+              orderedCab={orderedCab}
+              cabOrder={cabOrder}
+              onReorder={reorderCab}
+              meetingStage={cabMeetingStage}
+              meetingStartedAt={cabMeetingStartedAt}
+              onStartMeeting={startCabMeeting}
+              onResumeMeeting={resumeCabMeeting}
+              onResetMeeting={resetCabMeeting}
               prevWeek={prevWeek}
               cabTab={cabTab}
               setCabTab={setCabTab}
@@ -228,10 +273,13 @@ export default function App(){
               onFieldUpdate={updateField}
               onAddTask={addTask}
               onUpdateTask={updateTask}
-              queueIndex={cabIndex}
-              queueTotal={cabQueue.length}
-              onPrev={cabIndex>0?()=>setSelected(cabQueue[cabIndex-1]):null}
-              onNext={cabIndex>=0?()=>setSelected(cabIndex<cabQueue.length-1?cabQueue[cabIndex+1]:null):null}
+              queueIndex={cabMeetingStage!=="setup"?cabIndex:undefined}
+              queueTotal={cabMeetingStage!=="setup"?cabQueue.length:undefined}
+              onPrev={cabMeetingStage!=="setup"&&cabIndex>0?()=>setSelected(cabQueue[cabIndex-1]):null}
+              onNext={cabMeetingStage!=="setup"&&cabIndex>=0?()=>{
+                if(cabIndex<cabQueue.length-1){ setSelected(cabQueue[cabIndex+1]); }
+                else { setCabMeetingStage("ended"); setCabTab("outcome"); setSelected(null); }
+              }:null}
             />
           )}
 
