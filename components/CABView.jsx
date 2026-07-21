@@ -22,7 +22,12 @@ export default function CABView({pendingCAB,prevWeek,cabTab,setCabTab,role,onSel
                     <div style={{display:"flex",alignItems:"center",gap:8}}>
                       <span style={{fontSize:12,fontWeight:600,color:"#534AB7"}}>{item.id}</span><TypeBadge type={item.type}/><RiskBadge risk={item.risk}/>
                       {item.templateId&&<Badge label="Template" bg="#EEEDFE" color="#534AB7"/>}
-                      {clashes.length>0&&<span style={{fontSize:11,background:"#FAEEDA",color:"#854F0B",padding:"3px 9px",borderRadius:20,fontWeight:500}}>⚠ {clashes.length} clash{clashes.length>1?"es":""}</span>}
+                      {clashes.length>0&&(
+                        <span style={{display:"inline-flex",alignItems:"center",gap:5,fontSize:11,background:"#FAEEDA",color:"#854F0B",padding:"3px 9px",borderRadius:20,fontWeight:500}}>
+                          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L1 14h14L8 2z" stroke="#854F0B" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8 7v3M8 11.5v.5" stroke="#854F0B" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                          Clash{clashes.length>1?"es":""} ({clashes.length})
+                        </span>
+                      )}
                     </div>
                     <StageBadge stage={item.stage}/>
                   </div>
