@@ -101,6 +101,18 @@ export default function Dashboard({stats,changes,onFilter,onSelectChange}){
         {dueSoon.length===0 && (
           <div style={{fontSize:13,color:"var(--color-text-tertiary)"}}>Nothing starting in the next 7 days.</div>
         )}
+        {dueSoon.length>0 && (
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,padding:"0 10px 6px",borderBottom:"0.5px solid var(--color-border-tertiary)",marginBottom:4}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,minWidth:0}}>
+              <span style={{fontSize:11,fontWeight:600,color:"var(--color-text-tertiary)",textTransform:"uppercase",letterSpacing:"0.02em"}}>Change</span>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
+              <span style={{fontSize:11,fontWeight:600,color:"var(--color-text-tertiary)",textTransform:"uppercase",letterSpacing:"0.02em",width:100}}>Stage</span>
+              <span style={{fontSize:11,fontWeight:600,color:"var(--color-text-tertiary)",textTransform:"uppercase",letterSpacing:"0.02em",width:70}}>Risk</span>
+              <span style={{fontSize:11,fontWeight:600,color:"var(--color-text-tertiary)",textTransform:"uppercase",letterSpacing:"0.02em",width:110,textAlign:"right"}}>Date</span>
+            </div>
+          </div>
+        )}
         {dueSoon.map(c=>(
           <div key={c.id} onClick={()=>onSelectChange&&onSelectChange(c)}
             onMouseEnter={e=>e.currentTarget.style.background="var(--color-background-secondary)"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}
