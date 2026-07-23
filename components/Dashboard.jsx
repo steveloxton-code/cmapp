@@ -122,9 +122,9 @@ export default function Dashboard({stats,changes,onFilter,onSelectChange}){
               <span style={{fontSize:13,fontWeight:500,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.title}</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:10,flexShrink:0}}>
-              <StageBadge stage={c.stage}/>
-              <RiskBadge risk={c.risk}/>
-              <span style={{fontSize:11,fontWeight:600,color:c._overdue?"#791F1F":"var(--color-text-secondary)"}}>
+              <div style={{width:100}}><StageBadge stage={c.stage}/></div>
+              <div style={{width:70}}><RiskBadge risk={c.risk}/></div>
+              <span style={{fontSize:11,fontWeight:600,color:c._overdue?"#791F1F":"var(--color-text-secondary)",width:110,textAlign:"right"}}>
                 {c._overdue ? `Overdue · ${fmtShort(c._end)}` : `Starts ${fmtShort(c._start)}`}
               </span>
             </div>
